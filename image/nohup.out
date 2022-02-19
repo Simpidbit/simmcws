@@ -1,0 +1,41 @@
+Traceback (most recent call last):
+  File "../main.py", line 20, in <module>
+    import index
+  File "/home/ghostworker/data/python/minecraft/index.py", line 15, in <module>
+    import image
+  File "/home/ghostworker/data/python/minecraft/image/__init__.py", line 1, in <module>
+    from image.pic import *
+  File "/home/ghostworker/data/python/minecraft/image/pic.py", line 2, in <module>
+    from image import blocks as bl
+  File "/home/ghostworker/data/python/minecraft/image/blocks.py", line 10
+    31	:	"grass",					# 草方块
+     ^
+SyntaxError: invalid syntax
+[3J[H[2JError in connection handler
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 827, in transfer_data
+    message = await self.read_message()
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 895, in read_message
+    frame = await self.read_data_frame(max_size=self.max_size)
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 971, in read_data_frame
+    frame = await self.read_frame(max_size)
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 1051, in read_frame
+    extensions=self.extensions,
+  File "/usr/local/lib/python3.6/dist-packages/websockets/framing.py", line 105, in read
+    data = await reader(2)
+  File "/usr/lib/python3.6/asyncio/streams.py", line 672, in readexactly
+    raise IncompleteReadError(incomplete, n)
+asyncio.streams.IncompleteReadError: 0 bytes read on a total of 2 expected bytes
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.6/dist-packages/websockets/server.py", line 191, in handler
+    await self.ws_handler(self)
+  File "../main.py", line 79, in main
+    pkt = check.getMessageInfo(await client.recv(), name, global_var)
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 509, in recv
+    await self.ensure_open()
+  File "/usr/local/lib/python3.6/dist-packages/websockets/protocol.py", line 803, in ensure_open
+    raise self.connection_closed_exc()
+websockets.exceptions.ConnectionClosedError: code = 1006 (connection closed abnormally [internal]), no reason
