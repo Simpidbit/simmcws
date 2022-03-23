@@ -1,37 +1,39 @@
-# Copyright (c) 2020 ghostworker.All Rights Reserved.
-#
-# This file: main module.
-# 
+# Copyright (c) 2020 Simpidbit <gmail@8155530.com>. All Rights Reserved.
 
-from random import randint
-from threading import Thread
-import traceback
-import json
-import os
-import sys
-
-from asyncio import sleep
-from asyncio import get_event_loop, ensure_future
-from websockets import serve as ws_serve
+# Default listening port: 8080
 
 from send_message import *
 import packages
 import index
 import check
 
+import traceback
+import json
+import os
+import sys
+from random import randint
+from threading import Thread
+from asyncio import sleep
+from asyncio import get_event_loop, ensure_future
+
+from websockets import serve as ws_serve
+
+# Defaulted listening port
+PORT_DEFAULT = 8080
+
+# Defaulted listening IP
+IP_LISTENING_DEFAULT = "127.0.0.1"
 
 # Global valueables
 global_var = {}
-# To keep some packages that didnot arrive in the world.
+# To hold some packages that didnot arrive in the world.
 global_var["bad_packages"] = []
-# To keep command-line back packages.
+# To hold command-line back packages.
 global_var["commandResults"] = []
 
 
+# Return the player's id
 def getPlayerInfo(string:str) -> str:
-	"""
-	Return the player's id who is using this tool
-	"""
 	pkt = json.loads(string)
 	try:
 		name = pkt["body"]["victim"][0]
@@ -41,11 +43,9 @@ def getPlayerInfo(string:str) -> str:
 		return "None"
 
 
+# When buildings are build, 
+# this function can decide if the main process waits.
 async def ifWait(pkt:dict, global_var:dict):
-	"""
-	When buildings are build, 
-	this function can decide if the main process waits.
-	"""
 	try:
 		if "#func" in pkt["message"]:
 			await sleep(2)
@@ -60,10 +60,6 @@ async def ifWait(pkt:dict, global_var:dict):
 
 
 async def main(client, path):
-    """
-    The main function of this application
-    """
-    print("connected!")
     await sleep(1)
     await client.send(command("testfor @s"))
     name = getPlayerInfo(await client.recv())
@@ -86,15 +82,14 @@ async def main(client, path):
 
 
 server_port_g = 0
-def make_server():
+def build_server():
     global server_port_g
     server_port = 0
     try:
         server_port = sys.argv[1]
     except (IndexError):
-        server_port = 8080
-
-    server = ws_serve(main, "127.0.0.1", server_port)
+        server_port = PORT_DEFAULT
+    server = ws_serve(main, IP_LISTENING_DEFAULT, server_port)
     server_port_g = server_port
     return server
 
@@ -102,7 +97,7 @@ if __name__ == "__main__":
     os.system("clear")
     global_var["wait_sympol"] = False
 
-    server = make_server()
+    server = build_server()
     print(f"WebSocket服务端已经启动, 请在游戏聊天框内输入命令: /connect 127.0.0.1:{server_port_g} 来连接WebSocket服务端")
 
     loop = get_event_loop()
