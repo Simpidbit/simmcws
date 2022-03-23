@@ -5,24 +5,22 @@ import time
 import cmdarg
 from send_message import *
 
-
+# Send building commands to the world.
 async def sendBuildingPackages(client, lines, global_var, args):
-	"""Send building commands to the world. """
 	begin_time = time.time()
-	oldjindu = 0
+	prepercent = 0
 	clock = 0
 	await client.send(command("title @a actionbar 进度: 0％"))
 	for i in range(len(lines)):
 		await client.send(command(lines[i],i))
-		jindu = int(i/len(lines)*100)
-		if jindu > oldjindu:
-			await client.send(command(f"title @a actionbar 进度: {jindu}％"))
-			oldjindu = jindu
+		percent = int(i / len(lines) * 100)
+		if percent > prepercent:
+			await client.send(command(f"title @a actionbar 进度: {percent}％"))
+			prepercent = percent
 		await sleep(float(args.args["-t"]) / 1000)
 	await client.send(command("title @a actionbar 进度: 100％"))
-
-
 	end_time = time.time()
+	
 	# 统计信息
 	all_time = int(end_time - begin_time)
 	if all_time == 0:
@@ -30,9 +28,8 @@ async def sendBuildingPackages(client, lines, global_var, args):
 	all_blocks_number = len(lines)
 	speed = int(all_blocks_number / all_time)
 
-	if len(global_var["bad_packages"]) > 0:
-		await sleep(3)
-		print("waited-----------------------------------------------")
+	if len(global_var["bad_packages"]) > 0: await sleep(2)
+	
 	await client.send(command((ok("导入完毕!"))))
 	await client.send(command(say(f"本次共导入 {all_blocks_number} 个方块,共用时 {all_time} 秒,平均速度为 {speed} 方块/秒")))
 	
